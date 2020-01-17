@@ -1,17 +1,22 @@
 version: 0.2
+
 phases:
   install:
     runtime-versions:
       docker: 18
-      python: 3.8
   pre_build:
     commands:
-      - echo Build started on `date`
-build:
+      - echo "Get Current Account ID"
+      - src_account_id=$(echo $CODEBUILD_BUILD_ARN | cut -d':' -f5)
+      - echo "Logging in to the pre_build Amazon ECR in ..."
+      - $(aws ecr get-login --no-include-email --registry-ids ${src_account_id} --region "us-east-2")
+  build:
     commands:
-- echo Building the Docker image...
-- docker build
-      post_build:
-        commands:
-        - echo Build completed on `date`
-        - echo Pushing the Docker image...
+      - echo "Build started on `date`"
+      - echo "Building the Docker image..."
+      - docker build -t demo-app .
+      - docker tag demo-app:latest 415099068017.dkr.ecr.us-east-2.amazonaws.com/training-app:latest
+  post_build:
+    commands:
+      - echo "Pushing the Docker image..."
+      - docker push 415099068017.dkr.ecr.us-east-2.amazonaws.com/training-app:latest
