@@ -15,8 +15,8 @@ phases:
       - echo "Build started on `date`"
       - echo "Building the Docker image..."
       - docker build -t demo-app .
-      - docker tag demo-app:latest 415099068017.dkr.ecr.us-east-2.amazonaws.com/training-app:latest
-  post_build:
+      - docker tag demo-app:latest 982967131467.dkr.ecr.us-east-2.amazonaws.com/training-app:latest
+    post_build:
     commands:
       - echo "Pushing the Docker image..."
-      - docker push 415099068017.dkr.ecr.us-east-2.amazonaws.com/training-app:latest
+      - docker push 982967131467.dkr.ecr.us-east-2.amazonaws.com/training-app:latest
