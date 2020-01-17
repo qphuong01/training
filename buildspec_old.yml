@@ -1,0 +1,16 @@
+version: 0.2
+phases:
+  install:
+    runtime-versions:
+      docker: 18
+      python: 3.8
+  pre_build:
+    commands:
+      - \curl -O -J -L https://releases.hashicorp.com/terraform/0.12.19/terraform_0.12.19_linux_amd64.zip
+      - unzip terraform_0.12.19_linux_amd64.zip -d /root/.local/bin/
+      - chmod +x /root/.local/bin/terraform
+  build:
+    commands:
+      - terraform init
+      - terraform plan -no-color
+      - terraform apply -auto-approve -no-color
